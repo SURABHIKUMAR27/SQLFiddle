@@ -1,0 +1,59 @@
+SQL Fiddle
+Questions:
+1 )Write a query to find the average grade of all students across all courses.
+
+SELECT AVG(grade) AS average_grade FROM Enrollments;
+
+2 )Write a query to list the names of students along with the courses they are enrolled in. Include the course name in your result.
+
+SELECT Students.name AS student_name, Courses.course_name FROM Enrollments
+JOIN Students ON Enrollments.student_id = Students.student_id JOIN Courses ON Enrollments.course_id = Courses.course_id;
+
+3 )Write a query to count the number of students in each grade level.
+
+SELECT grade_level, COUNT(*) AS student_count FROM Students
+GROUP BY grade_level;
+
+4 )Write a query to find the maximum grade achieved in each course.
+
+SELECT Courses.course_name, MAX(Enrollments.grade) AS max_grade FROM Enrollments
+JOIN Courses ON Enrollments.course_id = Courses.course_id
+GROUP BY Courses.course_name;
+
+5 )Write a query to find the average grade of students who are in grade level 3.
+
+SELECT AVG(Enrollments.grade) AS average_grade
+FROM Enrollments
+JOIN Students ON Enrollments.student_id = Students.student_id WHERE Students.grade_level = 3;
+
+6 )Write a query to get a list of students, their enrolled courses, and the credit hours for each course.
+
+SELECT Students.name AS student_name, Courses.course_name, Courses.credits FROM Enrollments
+JOIN Students ON Enrollments.student_id = Students.student_id JOIN Courses ON Enrollments.course_id = Courses.course_id;
+
+7 )Write a query to find all courses that have an average grade greater than 3.0.
+
+SELECT Courses.course_name, AVG(Enrollments.grade) AS average_grade FROM Enrollments
+JOIN Courses ON Enrollments.course_id
+
+8 )Write a query to find students who have not received a grade of 4.0 in any course.
+
+SELECT DISTINCT Students.name FROM Students
+WHERE Students.student_id NOT IN (
+SELECT Enrollments.student_id FROM Enrollments
+WHERE Enrollments.grade = 4.0
+);
+
+9 )Write a query to find the names of students whose average grade is greater than the average grade of all students.
+
+SELECT Students.name
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id GROUP BY Students.name
+HAVING AVG(Enrollments.grade) > (
+SELECT AVG(grade) FROM Enrollments );
+
+10 )Write a query to display each student's name, the total number of courses they are enrolled in, and their average grade.
+
+SELECT Students.name AS student_name, COUNT(Enrollments.course_id) AS total_courses, AVG(Enrollments.grade) AS average_grade
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id GROUP BY Students.name;
